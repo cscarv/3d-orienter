@@ -1,0 +1,6 @@
+{
+    "num_compute_nodes": 1, 
+    "num_gpus_per_compute_node": 2,
+    "cpus_per_gpu": 14, // <= 14
+    "exp_dir": "reserved" // do not change
+}

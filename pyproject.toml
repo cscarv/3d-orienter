@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "orienter-3d"
+version = "0.1.0"
+description = ""
+authors = ["Yes And"]
+readme = "README.md"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[tool.poetry.dependencies]
+
+# A100s config
+torch = { url = "https://download.pytorch.org/whl/cu118/torch-2.1.2%2Bcu118-cp310-cp310-linux_x86_64.whl#sha256=60396358193f238888540f4a38d78485f161e28ec17fa445f0373b5350ef21f0" }
+torch-scatter = { url = "https://data.pyg.org/whl/torch-2.1.0%2Bcu118/torch_scatter-2.1.2%2Bpt21cu118-cp310-cp310-linux_x86_64.whl" }
+
+# H100s config
+# torch-scatter = { url = "https://data.pyg.org/whl/torch-2.2.0%2Bcu121/torch_scatter-2.1.2%2Bpt22cu121-cp310-cp310-linux_x86_64.whl" }
+# dont need? # torchvision = { url = "https://download.pytorch.org/whl/cu121/torchvision-0.17.2%2Bcu121-cp310-cp310-linux_x86_64.whl"}
+# torch = { url = "https://download.pytorch.org/whl/cu121/torch-2.2.2%2Bcu121-cp310-cp310-linux_x86_64.whl" }
+
+python="3.10.12"
+trimesh = "^3.12.5"
+wandb = "^0.15.8"
+json5 = "^0.9.14"
+flatdict = "^4.0.1"
+sorcery = "0.2.2"
+timm = "0.9.7"
+pywick = "^0.6.5"
+pysdf = "^0.1.9"
+pytorch-lightning = "^2.2.4"
+torchmetrics = "^1.4.0"
+tensorboard = "^2.16.2"
+matplotlib = "^3.9.0"
+open3d = "^0.18.0"
+addict = "^2.4.0"
+aiohttp = "^3.9.5"
+aiofiles = "^24.1.0"
+roma = "^1.5.0"
+pyglet = "1.5.29"
+polyscope = "^2.2.1"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
