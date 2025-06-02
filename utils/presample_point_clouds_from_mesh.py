@@ -36,5 +36,5 @@ def presample_point_clouds_from_mesh(index_file_path, num_points=10000):
         np.save(normals_outpath, normals)
 
 if __name__ == "__main__":
-    index_file_path = "data/shapenet_index_files/all_meshes/all.txt"
+    index_file_path = "../data/all_index.txt"
     presample_point_clouds_from_mesh(index_file_path)
