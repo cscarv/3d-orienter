@@ -5,7 +5,6 @@ from datetime import datetime
 from scipy.spatial.transform import Rotation as R
 import numpy as np
 import random
-from ml_models.orienter_model.UprightNetOrienter import estimate_up_from_segs
 
 def zero_out_nan_gradients(model):
     for param in model.parameters():
@@ -126,49 +125,6 @@ def visualize_model_on_mesh(model, mesh):
     mesh_rotated = trimesh.Trimesh(vertices=xyzs_rotated.squeeze().cpu().numpy(), faces=[])
     # concatenate the two meshes
     # mesh = trimesh.util.concatenate([mesh, mesh_rotated])
-    return mesh, mesh_rotated
-
-def visualize_uprightnet_model_on_mesh(model, mesh):
-    """Visualize the UprightNet model's action on an inference mesh."""
-    # Sample a random rotation matrix using trimesh.transformations.random_rotation_matrix
-    random_rotation = trimesh.transformations.random_rotation_matrix()
-    # Apply the rotation to the mesh
-    mesh.apply_transform(random_rotation)
-    # Sample points from the mesh
-    xyzs_rotated, faces = mesh.sample(2048, return_index=True)
-    xyzs_rotated = torch.as_tensor(xyzs_rotated).unsqueeze(0).to(next(model.parameters()))
-    xyzs_rotated = xyzs_rotated.transpose(2, 1).contiguous()
-    pred_segmentation = model(xyzs_rotated)
-    # transpose back to (B, N, D)
-    xyzs_rotated = xyzs_rotated.transpose(2, 1).contiguous()
-    # Estimate the up vector from the predicted segmentation
-    up_predicted = estimate_up_from_segs(pred_segmentation, xyzs_rotated).to(xyzs_rotated) # (B, 3)
-    # Generate random front vector and force it to be orthogonal to up_predicted
-    front_predicted = torch.randn_like(up_predicted).to(up_predicted)
-    front_predicted = front_predicted - torch.sum(front_predicted * up_predicted, dim=1, keepdim=True) * up_predicted
-    # Normalize front_predicted again
-    front_predicted = F.normalize(front_predicted, p=2, dim=1)
-    # Compute the rotation matrix from the predictions
-    predicted_rotations = rotation_from_model_outs(up_predicted, front_predicted).squeeze()
-    # Invert the predicted rotation matrix by taking the transpose
-    inverse_predicted_rotation = (predicted_rotations.T).cpu().numpy()
-    # Convert to 4x4 homogeneous matrix
-    inverse_predicted_rotation = np.pad(inverse_predicted_rotation, ((0, 1), (0, 1)), mode='constant')
-    inverse_predicted_rotation[-1, -1] = 1
-    # Apply the predicted rotation to the mesh
-    mesh.apply_transform(inverse_predicted_rotation)
-
-    # also apply predicted_rotations to xyzs_rotated
-    xyzs_rotated = xyzs_rotated @ predicted_rotations # don't transpose because we're right-multiplying
-    # make a mesh from xyzs_rotated
-    mesh_rotated = trimesh.Trimesh(vertices=xyzs_rotated.squeeze().cpu().numpy(), faces=[])
-    # color-code the point cloud based on the ground truth segmentation labels
-    colors = np.zeros((xyzs_rotated.shape[1], 3))
-    pred_seg_labels = pred_segmentation > 0.5
-    pred_seg_labels = pred_seg_labels.squeeze().cpu().numpy()
-    colors[pred_seg_labels] = [1, 0, 0] # red for base points
-    colors[~pred_seg_labels] = [0, 0, 1] # blue for non-base points
-    mesh_rotated.visual.vertex_colors = colors
     return mesh, mesh_rotated
 
 def visualize_flipper_model_on_mesh(model, mesh, flip_matrices):

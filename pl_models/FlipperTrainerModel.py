@@ -27,7 +27,6 @@ class FlipperTrainerModel(pl.LightningModule):
 
         self.model = core_model
         self.confusion_matrices = confusion_matrices
-        self.up_flipper = up_flipper
         if self.confusion_matrices:
             self.train_loss_fn = nn.NLLLoss()
         else:

@@ -90,7 +90,7 @@ class MultiMeshFlipperDataset(Dataset):
 
         else:
             if self.mesh_or_point_cloud == "mesh":
-                meshpath, _ = self.data_map[idx]
+                meshpath = self.index_list[idx]
                 tmesh = trimesh.load(meshpath, force="mesh") # force to load as mesh
                 verts, faces = self.normalize_mesh(tmesh.vertices, tmesh.faces)
                 tmesh = trimesh.Trimesh(verts, faces)

@@ -2,13 +2,15 @@ Welcome to the code for [Symmetry-Robust 3D Orientation Estimation](https://arxi
 
 ### Some pointers:
 
-- We use `poetry` for package and dependency management. Please follow the instructions in the [docs](https://python-poetry.org/docs/) to install and use `poetry`. Our method's dependencies are stored in `pyproject.toml`, and poetry will install all the necessary packages when you execute `poetry install`.
+- We use `poetry` for package and dependency management. Please follow the instructions in the [docs](https://python-poetry.org/docs/) to install and use `poetry`. Our method's dependencies are stored in `pyproject.toml`, and poetry will install all necessary packages when you execute `poetry install`.
 
 - Most of our training and evaluation scripts require the user to pass index files as arguments. 
     - These should be `.txt` files consisting of N lines, each storing the path to either (1) a `.npy` file containing point clouds or normal vectors sampled from a single shape (used in training and validation), or (2) a `.obj` file storing a mesh for a single shape (used at inference time). 
-    - We've provided a simple script for generating an index file from a directory of meshes in `utils/generate_index_file.py`. 
+    - We've provided a simple script for generating an index file from a directory of meshes in `.obj` format in `utils/generate_index_file.py`.
 
-- We have included a script `utils/presample_point_clouds_from_mesh.py` to help users normalize their meshes and presample point clouds and surface normals for training. Please normalize your meshes before training a model or performing inference using our pretrained checkpoints.
+- We have included a script `utils/presample_point_clouds_from_mesh.py` to help users normalize their meshes and presample point clouds and surface normals for training. 
+    - Please normalize your meshes before training a model or performing inference using our pretrained checkpoints.
+    - To minimize overhead during training, we recommend passing index files that point to presampled point clouds in `.npy` format as the `--train_index_file` and `--val_index_file` args in the trainer scripts.
 
 - We have included pretrained checkpoints for our orienter and flipper for your convenience in the folder `pretrained_ckpts`.
 

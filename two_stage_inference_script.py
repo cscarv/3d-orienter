@@ -18,15 +18,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--exp_dir", "-e", default="config/default", help="Path to specs.json5")
     parser.add_argument("--slurm_id", "-s", default=get_timestamp(), help="Path to specs.json5")
-    # parser.add_argument("--train_index_file", "-ti", default="data/shapenet_index_files/all_point_clouds/train.txt", help="Path to train index file")
-    # parser.add_argument("--val_index_file", "-vi", default="data/shapenet_index_files/all_point_clouds/val.txt", help="Path to val index file")
-    parser.add_argument("--inference_index_file", "-ii", default="data/objaverse_index_files/meshes/inference.txt", help="Path to inference index file")
+    parser.add_argument("--inference_index_file", "-ii", default="data/sample_index.txt", help="Path to inference index file")
     parser.add_argument("--orienter_ckpt_path", "-ock", default="pretrained_ckpts/orienter.ckpt", help="Path of checkpoint storing the model")
     parser.add_argument("--flipper_ckpt_path", "-fck", default="pretrained_ckpts/flipper.ckpt", help="Path of checkpoint storing the model")
     parser.add_argument("--results_dir", "-rd", default="results/inference_results_full_pipeline", help="Path to save the inference meshes")
     parser.add_argument("--num_candidates", "-nc", type=int, default=20, help="Number of candidates to consider in the voting scheme")
     parser.add_argument("--conformal", "-c", action='store_true', help="Use conformal prediction for flipper")
-    parser.add_argument("--calibration_index_file", "-ci", default="data/shapenet_index_files/all_meshes/calibration.txt", help="Path to calibration index file")
+    parser.add_argument("--calibration_index_file", "-ci", default="data/sample_index.txt", help="Path to calibration index file")
     parser.add_argument("--flipper_voting_scheme", "-fv", action='store_true', help="Use voting scheme for flipper")
     args = parser.parse_args()    
     slurm_id = args.slurm_id
@@ -162,7 +160,7 @@ def main():
                 mesh_copy = mesh.copy()
                 mesh_copy.apply_transform(flip_matrix)
                 # Save the mesh
-                results_subdir = os.path.join(results_dir, inference_mesh_path.split("/")[-3])
+                results_subdir = os.path.join(results_dir, inference_mesh_path.split("/")[-2]) # You may need to adjust this based on your directory structure
                 os.makedirs(results_subdir, exist_ok=True)
                 mesh_copy.export(os.path.join(results_subdir, f"{inference_mesh_path.split('/')[-1].split('.')[0]}_{i}.obj"))
 
@@ -174,7 +172,7 @@ def main():
             # Apply the flip matrix to the mesh
             mesh.apply_transform(flip_matrix)
             # Save the mesh as an obj file
-            results_subdir = os.path.join(results_dir, inference_mesh_path.split("/")[-3])
+            results_subdir = os.path.join(results_dir, inference_mesh_path.split("/")[-2]) # You may need to adjust this based on your directory structure
             os.makedirs(results_subdir, exist_ok=True)
             mesh.export(os.path.join(results_subdir, f"{inference_mesh_path.split('/')[-1].split('.')[0]}.obj"))
 
@@ -191,7 +189,7 @@ def main():
             # Apply the flip matrix to the mesh
             mesh.apply_transform(flip_matrix)
             # Save the mesh as an obj file
-            results_subdir = os.path.join(results_dir, inference_mesh_path.split("/")[-3])
+            results_subdir = os.path.join(results_dir, inference_mesh_path.split("/")[-2]) # You may need to adjust this based on your directory structure
             os.makedirs(results_subdir, exist_ok=True)
             mesh.export(os.path.join(results_subdir, f"{inference_mesh_path.split('/')[-1].split('.')[0]}.obj"))
 
