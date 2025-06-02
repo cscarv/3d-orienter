@@ -1,2 +1,0 @@
-/Users/scarv/projects/symmetry-robust-3d-orientation/sample_meshes/airplane_0/model_normalized.obj
-/Users/scarv/projects/symmetry-robust-3d-orientation/sample_meshes/airplane_1/model_normalized.obj
