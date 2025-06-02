@@ -2,7 +2,7 @@ Welcome to the code for [Symmetry-Robust 3D Orientation Estimation](https://arxi
 
 ### Some pointers:
 
-- We use `poetry` for package and dependency management. Please follow the instructions in the [docs](https://python-poetry.org/docs/) to install and use `poetry`. Our method's dependencies are stored in pyproject.toml, and poetry will install all the necessary packages when you execute `poetry install`.
+- We use `poetry` for package and dependency management. Please follow the instructions in the [docs](https://python-poetry.org/docs/) to install and use `poetry`. Our method's dependencies are stored in `pyproject.toml`, and poetry will install all the necessary packages when you execute `poetry install`.
 
 - Most of our training and evaluation scripts require the user to pass index files as arguments. 
     - These should be `.txt` files consisting of N lines, each storing the path to either (1) a `.npy` file containing point clouds or normal vectors sampled from a single shape (used in training and validation), or (2) a `.obj` file storing a mesh for a single shape (used at inference time). 
