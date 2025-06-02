@@ -119,18 +119,3 @@ def full_rotation_angular_error(predicted_rotation_matrices, target_rotation_mat
 	angular_errors = angular_errors * 180 / np.pi
 
 	return angular_errors
-
-# UprightNet fitting residual loss
-def fr_loss(pred, points, coef_d):
-    pred = pred > 0.5
-    min_y = coef_d.squeeze()
-    residual = abs(points[:,:,1] - min_y.unsqueeze(1))
-
-    fitting_residual = residual * pred
-    smoothl1_fn = nn.SmoothL1Loss(reduction='none')
-
-    fr_loss = smoothl1_fn(fitting_residual, torch.zeros_like(fitting_residual))
-    fr_loss = torch.mean((torch.sum(fr_loss, dim=1) + (torch.sum(pred, dim=1) == 0) * 2.0) \
-            / torch.max(torch.sum(pred, dim=1), torch.tensor([1]).cuda()))
-
-    return fr_loss

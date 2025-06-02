@@ -44,7 +44,6 @@ class MultiMeshFlipperDataset(Dataset):
                     normals = torch.as_tensor(tmesh.face_normals[faces], dtype=torch.float32) # face normals at sampled points
                     self.xyzs.append(xyz)
                     self.normals.append(normals)
-                # self.dataset_size = 1000
             elif self.mesh_or_point_cloud == "point_cloud":
                 # load all point clouds and normals into memory
                 self.xyzs = []
@@ -61,7 +60,6 @@ class MultiMeshFlipperDataset(Dataset):
                         # path for confusion matrix is same as xyz with "point_cloud" replaced by "confusion_matrix"
                         confusion_matrix = torch.tensor(np.load(fname.replace("point_cloud", "confusion_mtx")), dtype=torch.float32)
                         self.confusion_matrices.append(confusion_matrix)
-                # self.dataset_size = 1000
 
         # dataset comes with a fixed dict of 24 rotation matrices corresponding to 24 cube symmetries
         self.cube_flips = torch.load("utils/24_cube_flips.pt") # (24, 3, 3)

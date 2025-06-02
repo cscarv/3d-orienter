@@ -44,7 +44,6 @@ class MultiMeshDataset(Dataset):
                     normals = torch.as_tensor(tmesh.face_normals[faces], dtype=torch.float32) # face normals at sampled points
                     self.xyzs.append(xyz)
                     self.normals.append(normals)
-                # self.dataset_size = 1000
             elif self.mesh_or_point_cloud == "point_cloud":
                 # load all point clouds and normals into memory
                 self.xyzs = []
@@ -61,7 +60,6 @@ class MultiMeshDataset(Dataset):
                         # path for confusion matrix is same as xyz with "point_cloud" replaced by "confusion_mtx"
                         confusion_mtx = torch.tensor(np.load(fname.replace("point_cloud", "confusion_mtx")), dtype=torch.float32)
                         self.confusion_matrices.append(confusion_mtx)
-                # self.dataset_size = 1000
 
 
     def __getitem__(self, idx):
